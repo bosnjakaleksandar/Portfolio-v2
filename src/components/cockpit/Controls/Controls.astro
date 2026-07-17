@@ -1,11 +1,28 @@
 ---
+import speakerHigh from '../../../assets/svg/speaker-high.svg?raw';
+import speakerSlash from '../../../assets/svg/speaker-slash.svg?raw';
 import './Controls.scss';
+
+const iconOff = speakerSlash.replace('<svg ', '<svg class="controls__icon controls__icon--off" aria-hidden="true" focusable="false" ');
+const iconOn = speakerHigh.replace('<svg ', '<svg class="controls__icon controls__icon--on" aria-hidden="true" focusable="false" ');
 ---
 
 <div id="ab-ctl" class="controls">
-  <button type="button" id="ab-btn-sound" class="controls__btn" data-cur="TOGGLE">
-    SND ○ OFF
+  <button
+    type="button"
+    id="ab-btn-sound"
+    class="controls__btn controls__btn--icon"
+    data-cur="TOGGLE"
+    aria-pressed="true"
+    aria-label="Toggle sound"
+  >
+    <Fragment set:html={iconOff} />
+    <Fragment set:html={iconOn} />
   </button>
+  <audio id="ab-engine-start" preload="auto">
+    <source src="/audio/engine-start.mp3" type="audio/mpeg" />
+    <source src="/audio/engine-start.ogg" type="audio/ogg" />
+  </audio>
   <button type="button" id="ab-btn-motion" class="controls__btn" data-cur="TOGGLE">
     MOTION FULL
   </button>

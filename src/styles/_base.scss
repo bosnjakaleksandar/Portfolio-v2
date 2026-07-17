@@ -12,6 +12,12 @@ body {
   font-family: $font-heading;
 }
 
+html.is-locked,
+html.is-locked body {
+  overflow: hidden;
+  height: 100%;
+}
+
 a {
   color: var(--acc, #{$color-accent-default});
   text-decoration: none;

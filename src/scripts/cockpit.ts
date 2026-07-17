@@ -39,8 +39,29 @@ class Cockpit {
   };
 
   navFs = NAV_CHECKPOINTS.map((n) => n.f);
-  sound = false;
+  sound = true;
   forceReduce = false;
+  unlocked = false;
+  ignited = false;
+  engineAudio: HTMLAudioElement | null = null;
+  ignite = () => {
+    if (this.ignited) return;
+    this.ignited = true;
+    if (this.sound) this.ignitionSound();
+  };
+  igniteFromKey = (e: KeyboardEvent) => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
+      this.ignite();
+    }
+  };
+  preventScroll = (e: Event) => e.preventDefault();
+  preventScrollKey = (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+    if (target && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName)) return;
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
+      e.preventDefault();
+    }
+  };
 
   mq!: MediaQueryList;
   ctx: CanvasRenderingContext2D | null = null;
@@ -109,10 +130,33 @@ class Cockpit {
     });
 
     this.initControls();
+    this.engineAudio = document.getElementById('ab-engine-start') as HTMLAudioElement | null;
 
     if (matchMedia('(pointer:fine)').matches) this.initCursor();
 
+    this.lockScroll();
+    addEventListener('wheel', this.ignite, { passive: true, once: true });
+    addEventListener('touchstart', this.ignite, { passive: true, once: true });
+    addEventListener('keydown', this.igniteFromKey);
+    addEventListener('scroll', this.ignite, { passive: true, once: true });
+
     this.raf = requestAnimationFrame((t) => this.tick(t));
+  }
+
+  lockScroll() {
+    document.documentElement.classList.add('is-locked');
+    addEventListener('wheel', this.preventScroll, { passive: false });
+    addEventListener('touchmove', this.preventScroll, { passive: false });
+    addEventListener('keydown', this.preventScrollKey);
+  }
+
+  unlockScroll() {
+    if (this.unlocked) return;
+    this.unlocked = true;
+    document.documentElement.classList.remove('is-locked');
+    removeEventListener('wheel', this.preventScroll);
+    removeEventListener('touchmove', this.preventScroll);
+    removeEventListener('keydown', this.preventScrollKey);
   }
 
   initControls() {
@@ -120,8 +164,12 @@ class Cockpit {
     const motionBtn = document.getElementById('ab-btn-motion');
     soundBtn?.addEventListener('click', () => {
       this.sound = !this.sound;
-      soundBtn.textContent = this.sound ? 'SND ● ON' : 'SND ○ OFF';
-      if (this.sound) this.ignitionSound();
+      soundBtn.setAttribute('aria-pressed', String(this.sound));
+      if (this.sound && this.ignited) this.ignitionSound();
+      if (!this.sound) {
+        this.engineAudio?.pause();
+        if (this.engineAudio) this.engineAudio.currentTime = 0;
+      }
     });
     motionBtn?.addEventListener('click', () => {
       this.forceReduce = !this.forceReduce;
@@ -265,13 +313,13 @@ class Cockpit {
   }
 
   ignitionSound() {
-    try {
-      this.ac = this.ac || new (window.AudioContext || (window as any).webkitAudioContext)();
-      const o = this.ac.createOscillator(), g = this.ac.createGain(), t = this.ac.currentTime;
-      o.type = 'sawtooth'; o.frequency.setValueAtTime(55, t); o.frequency.exponentialRampToValueAtTime(160, t + 0.7);
-      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.06, t + 0.15); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
-      o.connect(g).connect(this.ac.destination); o.start(t); o.stop(t + 1);
-    } catch { /* Web Audio unavailable — silently skip */ }
+    if (!this.engineAudio) return;
+    this.engineAudio.pause();
+    this.engineAudio.currentTime = 0;
+    this.engineAudio.volume = 0.65;
+    void this.engineAudio.play().catch(() => {
+      // Some browsers require an explicit click before allowing audio.
+    });
   }
 
   blip(f: number) {
@@ -295,6 +343,7 @@ class Cockpit {
     const dv = scrollY - this.lastY; this.lastY = scrollY;
     this.spd += (Math.min(340, Math.abs(dv) * 2.4 + (this.p > 0.04 ? 60 + this.p * 40 : 0)) - this.spd) * 0.06;
     this.bootT = Math.min(1, (t - this.t0) / 2200);
+    if (!this.unlocked && this.bootT >= 1) this.unlockScroll();
     this.apply(t);
     this.draw(t);
   }
@@ -326,7 +375,7 @@ class Cockpit {
       el.style.setProperty('--op', bl * (n + 1) > k + 1 ? '1' : '0');
     });
     this.fs(E['sc-boot'], -1, -0.5, 0.038, 0.06, 0);
-    E['ab-hint'].classList.toggle('boot__hint--hidden', p >= 0.01);
+    E['ab-hint'].classList.toggle('boot__hint--hidden', p >= 0.01 || !this.unlocked);
 
     const hud = this.ss(this.seg(0.045, 0.08));
     E['ab-hud'].style.setProperty('--op', String(hud));
