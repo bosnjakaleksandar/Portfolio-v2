@@ -1,0 +1,122 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.modules {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  opacity: var(--op, 0);
+  transform: translateY(var(--ty, 0px));
+
+  .is-reduced-motion & {
+    transform: none;
+  }
+
+  &__inner {
+    width: min(1060px, 100%);
+  }
+
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: clamp(14px, 2.5vh, 24px);
+    flex-wrap: wrap;
+  }
+
+  &__eyebrow {
+    @include mono-label;
+    margin: 0;
+  }
+
+  &__diag {
+    margin: 0;
+    font-family: $font-mono;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: text(0.4);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px;
+  }
+
+  &__card {
+    border: 1px solid line(0.09);
+    background: rgba(15, 18, 22, 0.55);
+    backdrop-filter: blur(10px);
+    padding: clamp(12px, 1.6vw, 18px);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: var(--op, 1);
+    transform: translateY(var(--card-ty, 0px));
+    transition: border-color 0.2s, background 0.2s;
+
+    .is-reduced-motion & {
+      transform: none;
+    }
+
+    &:hover {
+      border-color: rgba(74, 217, 232, 0.5);
+      background: rgba(18, 24, 28, 0.7);
+    }
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: $font-mono;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    color: text(0.4);
+  }
+
+  &__on {
+    color: var(--acc, #{$color-accent-default});
+  }
+
+  &__name {
+    margin: 0;
+    font-weight: 800;
+    font-size: clamp(13px, 1.5vw, 15.5px);
+    letter-spacing: 0.06em;
+    color: $color-heading;
+    text-transform: uppercase;
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: text(0.55);
+  }
+
+  &__tech {
+    margin: 0 0 auto;
+    font-family: $font-mono;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: text(0.45);
+  }
+
+  &__bar {
+    height: 2px;
+    background: line(0.08);
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    width: var(--w, 0%);
+    background: var(--acc, #{$color-accent-default});
+  }
+}

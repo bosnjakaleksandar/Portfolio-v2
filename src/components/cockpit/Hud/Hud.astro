@@ -1,0 +1,21 @@
+---
+import './Hud.scss';
+---
+
+<div id="ab-hud" class="hud">
+  <div class="hud__status">
+    <span class="hud__led"></span>
+    <span>AB-02<span id="ab-hud-sys" class="hud__sys"> // SYSTEM ACTIVE</span></span>
+  </div>
+  <div id="ab-hud-mid" class="hud__mid">
+    <span>SPD <b id="ab-spd" class="hud__value">000</b></span>
+    <span>GEAR <b id="ab-gear" class="hud__value hud__value--accent">N</b></span>
+    <span id="ab-hud-lapw">LAP <b id="ab-lap" class="hud__value">0:00.000</b></span>
+  </div>
+  <div class="hud__pos">
+    <span id="ab-pct">000%</span><span id="ab-hud-tp" class="hud__pos-label">TRACK POS</span>
+  </div>
+</div>
+<div class="hud__progress">
+  <div id="ab-prog" class="hud__progress-fill"></div>
+</div>

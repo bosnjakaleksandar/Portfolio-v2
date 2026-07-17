@@ -1,0 +1,98 @@
+@use '../../../styles/variables' as *;
+
+.process {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  opacity: var(--op, 0);
+  transform: translateY(var(--ty, 0px));
+
+  .is-reduced-motion & {
+    transform: none;
+  }
+
+  &__inner {
+    width: min(760px, 100%);
+  }
+
+  &__eyebrow {
+    font-family: $font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.3em;
+    color: var(--acc, #{$color-accent-default});
+    margin: 0 0 6px;
+  }
+
+  &__title {
+    margin: 0 0 clamp(14px, 2.5vh, 24px);
+    font-weight: 800;
+    font-size: clamp(20px, 2.6vw, 30px);
+    letter-spacing: -0.01em;
+    color: $color-heading;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__step {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    padding: clamp(8px, 1.4vh, 13px) 0;
+    border-bottom: 1px solid line(0.07);
+  }
+
+  &__no {
+    font-family: $font-mono;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: text(0.35);
+
+    .process__step--cleared & {
+      color: var(--acc, #{$color-accent-default});
+    }
+  }
+
+  &__body {
+    min-width: 0;
+  }
+
+  &__name {
+    font-weight: 700;
+    font-size: clamp(13px, 1.6vw, 16px);
+    letter-spacing: 0.04em;
+    color: text(0.5);
+    text-transform: uppercase;
+
+    .process__step--cleared & {
+      color: $color-heading;
+    }
+  }
+
+  &__desc {
+    display: block;
+    font-size: 12px;
+    line-height: 1.5;
+    color: text(0.45);
+    margin-top: 2px;
+  }
+
+  &__status {
+    font-family: $font-mono;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    color: text(0.25);
+
+    .process__step--cleared & {
+      color: var(--acc, #{$color-accent-default});
+    }
+  }
+}

@@ -1,0 +1,21 @@
+---
+import { REPORT } from '../../../data/content';
+import './ReportScreen.scss';
+---
+
+<section id="sc-report" class="report" data-screen-label="Performance report" aria-label="Performance report">
+  <div class="report__inner">
+    <p class="report__eyebrow">PERFORMANCE REPORT</p>
+    <h2 class="report__title">Lap complete.</h2>
+    <div class="report__grid">
+      {
+        REPORT.map((r) => (
+          <div class="report__stat">
+            <div class="report__stat-value">{r.v}</div>
+            <div class="report__stat-label">{r.k}</div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

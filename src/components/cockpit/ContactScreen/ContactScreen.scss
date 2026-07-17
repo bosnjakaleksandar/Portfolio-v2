@@ -1,0 +1,88 @@
+@use '../../../styles/variables' as *;
+
+.contact {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  opacity: var(--op, 0);
+  transform: translateY(var(--ty, 0px));
+
+  .is-reduced-motion & {
+    transform: none;
+  }
+
+  &__inner {
+    text-align: center;
+    max-width: 720px;
+  }
+
+  &__eyebrow {
+    font-family: $font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.34em;
+    color: text(0.5);
+    margin: 0 0 14px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(38px, 7.5vw, 92px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: $color-heading;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  &__cta {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: clamp(22px, 4vh, 38px);
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 26px;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    font-family: $font-mono;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    &--primary {
+      background: var(--acc, #{$color-accent-default});
+      color: $color-bg;
+      font-weight: 700;
+
+      &:hover {
+        background: #fff;
+        color: $color-bg;
+      }
+    }
+
+    &--secondary {
+      border: 1px solid line(0.25);
+      color: $color-text;
+
+      &:hover {
+        border-color: var(--acc, #{$color-accent-default});
+        color: #fff;
+      }
+    }
+  }
+
+  &__footer {
+    margin: clamp(20px, 4vh, 36px) 0 0;
+    font-family: $font-mono;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: text(0.35);
+  }
+}

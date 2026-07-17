@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hud from '../components/cockpit/Hud/Hud.astro';
+import NavRail from '../components/cockpit/NavRail/NavRail.astro';
+import BootScreen from '../components/cockpit/BootScreen/BootScreen.astro';
+import HeroScreen from '../components/cockpit/HeroScreen/HeroScreen.astro';
+import DriverScreen from '../components/cockpit/DriverScreen/DriverScreen.astro';
+import ModulesScreen from '../components/cockpit/ModulesScreen/ModulesScreen.astro';
+import RunsScreen from '../components/cockpit/RunsScreen/RunsScreen.astro';
+import ProcessScreen from '../components/cockpit/ProcessScreen/ProcessScreen.astro';
+import ReportScreen from '../components/cockpit/ReportScreen/ReportScreen.astro';
+import ContactScreen from '../components/cockpit/ContactScreen/ContactScreen.astro';
+import Controls from '../components/cockpit/Controls/Controls.astro';
+import CursorFx from '../components/cockpit/CursorFx/CursorFx.astro';
+import './index.scss';
+---
+
+<Layout>
+  <div id="ab-track" class="track" aria-hidden="true"></div>
+  <main id="ab-stage" class="stage" data-screen-label="Cockpit">
+    <canvas id="ab-canvas" class="stage__canvas"></canvas>
+    <div id="ab-grain" class="stage__grain"></div>
+
+    <Hud />
+    <NavRail />
+    <BootScreen />
+    <HeroScreen />
+    <DriverScreen />
+    <ModulesScreen />
+    <RunsScreen />
+    <ProcessScreen />
+    <ReportScreen />
+    <ContactScreen />
+    <Controls />
+
+    <CursorFx />
+  </main>
+</Layout>
+
+<script>
+  import '../scripts/cockpit';
+</script>

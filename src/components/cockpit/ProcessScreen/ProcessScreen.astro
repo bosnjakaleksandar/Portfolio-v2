@@ -1,0 +1,25 @@
+---
+import { STEPS } from '../../../data/content';
+import './ProcessScreen.scss';
+---
+
+<section id="sc-proc" class="process" data-screen-label="Pit wall process" aria-label="Development process">
+  <div class="process__inner">
+    <p class="process__eyebrow">PIT WALL // BUILD SEQUENCE</p>
+    <h2 class="process__title">How every build runs.</h2>
+    <div class="process__list">
+      {
+        STEPS.map((s, i) => (
+          <div data-step={i} class="process__step">
+            <span data-stepno class="process__no">{s.no}</span>
+            <span class="process__body">
+              <span data-stepname class="process__name">{s.name}</span>
+              <span data-stepdesc class="process__desc">{s.desc}</span>
+            </span>
+            <span data-stepok class="process__status">STANDBY</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+@use '../../../styles/variables' as *;
+
+.controls {
+  position: absolute;
+  left: clamp(12px, 2vw, 22px);
+  bottom: clamp(12px, 2vh, 20px);
+  display: flex;
+  gap: 8px;
+  z-index: 45;
+  opacity: var(--op, 0);
+
+  &__btn {
+    min-height: 38px;
+    padding: 9px 14px;
+    background: rgba(12, 14, 17, 0.7);
+    border: 1px solid line(0.14);
+    color: text(0.7);
+    font-family: $font-mono;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+
+    &:hover {
+      border-color: rgba(74, 217, 232, 0.6);
+      color: #fff;
+    }
+  }
+}

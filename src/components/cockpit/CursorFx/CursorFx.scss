@@ -1,0 +1,56 @@
+@use '../../../styles/variables' as *;
+
+.cursor {
+  &__ring {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 1px solid var(--acc, #{$color-accent-default});
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99;
+    opacity: var(--op, 0);
+    transition: width 0.18s, height 0.18s, margin 0.18s;
+
+    &--active {
+      width: 46px;
+      height: 46px;
+      margin: -23px 0 0 -23px;
+    }
+  }
+
+  &__dot {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 4px;
+    margin: -2px 0 0 -2px;
+    background: var(--acc, #{$color-accent-default});
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99;
+    opacity: var(--op, 0);
+  }
+
+  &__label {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 14px 0 0 18px;
+    font-family: $font-mono;
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
+    color: var(--acc, #{$color-accent-default});
+    pointer-events: none;
+    z-index: 99;
+    opacity: 0;
+
+    &--active {
+      opacity: 1;
+    }
+  }
+}

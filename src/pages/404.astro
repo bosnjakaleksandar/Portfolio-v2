@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArrowRightIcon from '../components/icons/ArrowRightIcon/ArrowRightIcon.astro';
+import './404.scss';
+---
+
+<Layout title="404 — Off track" description="Page not found.">
+  <main class="not-found">
+    <div>
+      <p class="not-found__eyebrow">TELEMETRY LOST // CHECKPOINT NOT FOUND</p>
+      <h1 class="not-found__code">404</h1>
+      <p class="not-found__desc">This checkpoint doesn't exist on the circuit.</p>
+      <a href="/" class="not-found__link">RETURN TO PIT LANE <ArrowRightIcon /></a>
+    </div>
+  </main>
+</Layout>

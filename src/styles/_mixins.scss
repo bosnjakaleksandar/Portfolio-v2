@@ -1,0 +1,40 @@
+@use 'variables' as *;
+
+// The small, uppercase, letter-spaced mono label used for eyebrows/telemetry
+// captions across nearly every section (e.g. "DRIVER TELEMETRY", "SYSTEM MODULES // 07 ONLINE").
+@mixin mono-label($size: 10.5px, $tracking: 0.3em, $color: var(--acc, #{$color-accent-default})) {
+  font-family: $font-mono;
+  font-size: $size;
+  letter-spacing: $tracking;
+  color: $color;
+}
+
+// Shared corner-bracket decoration on framed panels (driver photo, run displays).
+@mixin corner-bracket($pos, $size: 14px, $thickness: 2px) {
+  content: '';
+  position: absolute;
+  width: $size;
+  height: $size;
+
+  @if $pos == top-left {
+    top: -1px;
+    left: -1px;
+    border-top: $thickness solid var(--acc, #{$color-accent-default});
+    border-left: $thickness solid var(--acc, #{$color-accent-default});
+  } @else if $pos == top-right {
+    top: -1px;
+    right: -1px;
+    border-top: $thickness solid var(--acc, #{$color-accent-default});
+    border-right: $thickness solid var(--acc, #{$color-accent-default});
+  } @else if $pos == bottom-left {
+    bottom: -1px;
+    left: -1px;
+    border-bottom: $thickness solid var(--acc, #{$color-accent-default});
+    border-left: $thickness solid var(--acc, #{$color-accent-default});
+  } @else if $pos == bottom-right {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: $thickness solid var(--acc, #{$color-accent-default});
+    border-right: $thickness solid var(--acc, #{$color-accent-default});
+  }
+}

@@ -1,0 +1,50 @@
+@use '../../../styles/variables' as *;
+
+.nav-rail {
+  position: absolute;
+  right: clamp(10px, 2vw, 24px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 40;
+  opacity: var(--op, 0);
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    padding: 7px 4px;
+    cursor: pointer;
+    font-family: $font-mono;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: text(0.4);
+
+    &--active {
+      color: #fff;
+    }
+  }
+
+  &__label {
+    min-width: 74px;
+    text-align: right;
+  }
+
+  &__dot {
+    width: 6px;
+    height: 6px;
+    border: 1px solid line(0.35);
+    transform: rotate(45deg);
+    background: transparent;
+
+    &--active {
+      background: var(--acc, #{$color-accent-default});
+      border-color: var(--acc, #{$color-accent-default});
+      box-shadow: 0 0 8px var(--acc, #{$color-accent-default});
+    }
+  }
+}

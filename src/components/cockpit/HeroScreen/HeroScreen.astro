@@ -1,0 +1,29 @@
+---
+import { SITE } from '../../../data/content';
+import './HeroScreen.scss';
+
+const [firstName, lastName] = SITE.name.toUpperCase().split(' ');
+const firstLetters = Array.from(firstName);
+const lastLetters = Array.from(lastName);
+let idx = 0;
+---
+
+<section id="sc-hero" class="hero" data-screen-label="Hero" aria-label="Introduction">
+  <div class="hero__inner">
+    <p class="hero__eyebrow">DRIVER 02&nbsp;//&nbsp;SYSTEM ONLINE</p>
+    <h1 id="ab-name" class="hero__name">
+      <span class="hero__word">
+        {firstLetters.map((ch) => <span data-l={idx++} class="hero__letter">{ch}</span>)}
+      </span>
+      <span class="hero__word hero__word--outline">
+        {lastLetters.map((ch) => <span data-l={idx++} class="hero__letter">{ch}</span>)}
+      </span>
+    </h1>
+    <div id="ab-role" class="hero__role">
+      <span class="hero__rule"></span>
+      <span id="ab-roletxt" class="hero__role-text">{SITE.role}</span>
+      <span class="hero__rule"></span>
+    </div>
+    <p id="ab-stmt" class="hero__statement">{SITE.statement}</p>
+  </div>
+</section>

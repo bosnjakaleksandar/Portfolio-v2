@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: $color-bg;
+  color: $color-text;
+}
+
+body {
+  font-family: $font-heading;
+}
+
+a {
+  color: var(--acc, #{$color-accent-default});
+  text-decoration: none;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+::selection {
+  background: rgba(74, 217, 232, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--acc, #{$color-accent-default});
+  outline-offset: 3px;
+}
+
+@keyframes ab-pulse {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes ab-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}

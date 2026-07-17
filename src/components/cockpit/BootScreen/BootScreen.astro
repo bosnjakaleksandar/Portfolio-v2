@@ -1,0 +1,20 @@
+---
+import { BOOT_LINES } from '../../../data/content';
+import './BootScreen.scss';
+---
+
+<section id="sc-boot" class="boot" data-screen-label="Ignition" aria-label="Ignition sequence">
+  <div class="boot__log">
+    {
+      BOOT_LINES.map((b, i) => (
+        <div data-boot={i} class="boot__line">
+          <span>{b.k}</span><span class="boot__line-value">{b.v}</span>
+        </div>
+      ))
+    }
+    <div data-boot="99" class="boot__line boot__line--ready">
+      IGNITION READY<span class="boot__cursor">_</span>
+    </div>
+  </div>
+  <p id="ab-hint" class="boot__hint">SCROLL TO IGNITE</p>
+</section>

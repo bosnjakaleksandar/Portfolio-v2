@@ -1,0 +1,67 @@
+@use '../../../styles/variables' as *;
+
+.report {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  opacity: var(--op, 0);
+  transform: translateY(var(--ty, 0px));
+
+  .is-reduced-motion & {
+    transform: none;
+  }
+
+  &__inner {
+    text-align: center;
+    width: min(640px, 100%);
+  }
+
+  &__eyebrow {
+    font-family: $font-mono;
+    font-size: 10.5px;
+    letter-spacing: 0.34em;
+    color: var(--acc, #{$color-accent-default});
+    margin: 0 0 12px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(34px, 6vw, 72px);
+    letter-spacing: -0.015em;
+    line-height: 1;
+    color: $color-heading;
+    text-transform: uppercase;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: clamp(18px, 3vh, 30px);
+  }
+
+  &__stat {
+    border: 1px solid line(0.09);
+    background: rgba(15, 18, 22, 0.5);
+    padding: 14px 10px;
+  }
+
+  &__stat-value {
+    font-family: $font-mono;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--acc, #{$color-accent-default});
+  }
+
+  &__stat-label {
+    font-family: $font-mono;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: text(0.45);
+    margin-top: 5px;
+  }
+}

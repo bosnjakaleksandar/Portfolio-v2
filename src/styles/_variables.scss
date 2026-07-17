@@ -1,0 +1,26 @@
+// Design tokens for the "Racing Cockpit" theme.
+
+$color-bg: #07080a;
+$color-panel: #0d0f12;
+$color-panel-alt: #0b0d10;
+$color-heading: #f2f4f6;
+$color-text: #e8eaed;
+$color-accent-default: #4ad9e8; // fallback for var(--acc, ...) — live value set at runtime from data/content.ts
+
+$font-heading: 'Archivo', system-ui, sans-serif;
+$font-mono: 'IBM Plex Mono', monospace;
+
+// rgba(232,234,237, $alpha) — the off-white text tint used at varying opacities everywhere.
+@function text($alpha) {
+  @return rgba(232, 234, 237, $alpha);
+}
+
+// rgba(255,255,255, $alpha) — hairline borders/dividers.
+@function line($alpha) {
+  @return rgba(255, 255, 255, $alpha);
+}
+
+// rgba(7,8,10, $alpha) — background-tinted overlays/gradients.
+@function bg($alpha) {
+  @return rgba(7, 8, 10, $alpha);
+}

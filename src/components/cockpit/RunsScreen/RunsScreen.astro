@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import screenshotPlaceholder from '../../../assets/projects/screenshot-placeholder.jpg';
+import { PROJECTS } from '../../../data/content';
+import ArrowRightIcon from '../../icons/ArrowRightIcon/ArrowRightIcon.astro';
+import './RunsScreen.scss';
+---
+
+<section id="sc-runs" class="runs" data-screen-label="Featured runs" aria-label="Featured projects">
+  <div class="runs__index">
+    <span class="runs__index-accent">INSPECTION MODE</span><span>//</span><span id="ab-runidx">RUN 01 / 04</span>
+  </div>
+  {
+    PROJECTS.map((p, i) => (
+      <article data-run={i} data-screen-label={`Run ${p.no}`} class="runs__item">
+        <div class="runs__grid" data-rungrid>
+          <div class="runs__copy">
+            <div class="runs__meta">
+              <span class="runs__no">{p.no}</span>
+              <span class="runs__type">{p.type}</span>
+            </div>
+            <h3 class="runs__title">{p.name}</h3>
+            <div class="runs__facts">
+              <div>
+                <div class="runs__fact-label">SESSION BRIEF</div>
+                <div class="runs__fact-value">{p.brief}</div>
+              </div>
+              <div data-runx>
+                <div class="runs__fact-label">TRACK CONDITIONS</div>
+                <div class="runs__fact-value">{p.cond}</div>
+              </div>
+              <div data-runx>
+                <div class="runs__fact-label">SYSTEM SETUP</div>
+                <div class="runs__fact-value">{p.setup}</div>
+              </div>
+              <div class="runs__footer">
+                <span>ROLE // {p.role}</span><span class="runs__footer-tech">{p.tech}</span>
+              </div>
+            </div>
+            <a href={p.link} class="runs__enter" data-cur="ENTER">
+              ENTER EXPERIENCE <ArrowRightIcon />
+            </a>
+          </div>
+          <div class="runs__display" data-rundisp>
+            <div class="runs__display-frame">
+              <div class="runs__display-header">
+                <span>CENTRAL DISPLAY // FEED {p.no}</span><span class="runs__live">LIVE</span>
+              </div>
+              <div class="runs__display-visual">
+                <Image
+                  src={screenshotPlaceholder}
+                  alt={`Screenshot placeholder for project run ${p.no} — replace with real project visual`}
+                  width={640}
+                  height={400}
+                  class="runs__display-img"
+                />
+              </div>
+              <div class="runs__display-footer">
+                <span>RESULT // {p.result}</span>
+              </div>
+              <span class="runs__corner runs__corner--tl"></span>
+              <span class="runs__corner runs__corner--tr"></span>
+              <span class="runs__corner runs__corner--bl"></span>
+              <span class="runs__corner runs__corner--br"></span>
+            </div>
+          </div>
+        </div>
+      </article>
+    ))
+  }
+</section>

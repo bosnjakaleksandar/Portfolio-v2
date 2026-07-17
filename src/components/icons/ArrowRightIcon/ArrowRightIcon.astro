@@ -1,0 +1,9 @@
+---
+import rawSvg from '../../../assets/svg/arrow-right.svg?raw';
+import './ArrowRightIcon.scss';
+
+// Inline the SVG file's own markup and tag it with our sizing class + a11y attrs.
+const markup = rawSvg.replace('<svg ', '<svg class="icon-arrow" aria-hidden="true" focusable="false" ');
+---
+
+<Fragment set:html={markup} />

@@ -1,0 +1,34 @@
+---
+import { MODULES } from '../../../data/content';
+import './ModulesScreen.scss';
+---
+
+<section id="sc-mod" class="modules" data-screen-label="System modules" aria-label="System modules">
+  <div class="modules__inner">
+    <div class="modules__header">
+      <p class="modules__eyebrow">SYSTEM MODULES // 07 ONLINE</p>
+      <p id="ab-moddiag" class="modules__diag">ALL DIAGNOSTICS NOMINAL</p>
+    </div>
+    <div class="modules__grid" data-modgrid>
+      {
+        MODULES.map((m, i) => (
+          <div class="modules__card" data-mod={i} data-cur="MODULE">
+            <div class="modules__row">
+              <span>{m.code}</span><span class="modules__on">ON</span>
+            </div>
+            <h3 class="modules__name">{m.name}</h3>
+            <p data-moddesc class="modules__desc">
+              {m.desc}
+            </p>
+            <p data-modtech class="modules__tech">
+              {m.tech}
+            </p>
+            <div class="modules__bar">
+              <div data-modbar class="modules__bar-fill" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+@use '../styles/variables' as *;
+
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  font-family: $font-heading;
+
+  &__eyebrow {
+    font-family: $font-mono;
+    font-size: 11px;
+    letter-spacing: 0.34em;
+    color: var(--acc, #{$color-accent-default});
+    margin-bottom: 16px;
+  }
+
+  &__code {
+    margin: 0;
+    font-weight: 900;
+    font-size: clamp(48px, 12vw, 140px);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: $color-heading;
+  }
+
+  &__desc {
+    margin: 20px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: text(0.62);
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 28px;
+    padding: 14px 24px;
+    background: var(--acc, #{$color-accent-default});
+    color: $color-bg;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    font-family: $font-mono;
+  }
+}
