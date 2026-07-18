@@ -1,29 +1,29 @@
 ---
-import { SITE } from '../../../data/content';
+import { CONTACT, CURSOR, SITE } from '../../../data/content';
 import ArrowRightIcon from '../../icons/ArrowRightIcon/ArrowRightIcon.astro';
 import './ContactScreen.scss';
 ---
 
-<section id="sc-contact" class="contact" data-screen-label="Contact / standby" aria-label="Contact">
+<section id="sc-contact" class="contact" data-screen-label={CONTACT.screenLabel} aria-label={CONTACT.ariaLabel}>
   <div class="contact__inner">
-    <p class="contact__eyebrow">SYSTEM ENTERING STANDBY // NEXT MISSION AVAILABLE</p>
-    <h2 class="contact__title">Ready for the next build.</h2>
+    <p class="contact__eyebrow">{CONTACT.eyebrow}</p>
+    <h2 class="contact__title">{CONTACT.title}</h2>
     <div id="ab-cta" class="contact__cta">
-      <a href={`mailto:${SITE.email}`} class="contact__btn contact__btn--primary" data-cur="SEND">
-        START TRANSMISSION <ArrowRightIcon />
+      <a href={`mailto:${SITE.email}`} class="contact__btn contact__btn--primary" data-cur={CURSOR.actions.send}>
+        {CONTACT.primaryLabel} <ArrowRightIcon />
       </a>
       <a
         href={SITE.linkedin}
         target="_blank"
         rel="noopener"
         class="contact__btn contact__btn--secondary"
-        data-cur="LINK"
+        data-cur={CURSOR.actions.link}
       >
-        LINKEDIN
+        {CONTACT.secondaryLabel}
       </a>
     </div>
     <p class="contact__footer">
-      {SITE.email}&nbsp;//&nbsp;AB-02 SHUTTING DOWN&nbsp;//&nbsp;SEE YOU ON TRACK
+      {SITE.email}&nbsp;//&nbsp;{CONTACT.footerPrefix}&nbsp;//&nbsp;{CONTACT.footerSuffix}
     </p>
   </div>
 </section>

@@ -1,12 +1,12 @@
 ---
-import { STEPS } from '../../../data/content';
+import { PROCESS, STEPS } from '../../../data/content';
 import './ProcessScreen.scss';
 ---
 
-<section id="sc-proc" class="process" data-screen-label="Pit wall process" aria-label="Development process">
+<section id="sc-proc" class="process" data-screen-label={PROCESS.screenLabel} aria-label={PROCESS.ariaLabel}>
   <div class="process__inner">
-    <p class="process__eyebrow">PIT WALL // BUILD SEQUENCE</p>
-    <h2 class="process__title">How every build runs.</h2>
+    <p class="process__eyebrow">{PROCESS.eyebrow}</p>
+    <h2 class="process__title">{PROCESS.title}</h2>
     <div class="process__list">
       {
         STEPS.map((s, i) => (
@@ -16,7 +16,7 @@ import './ProcessScreen.scss';
               <span data-stepname class="process__name">{s.name}</span>
               <span data-stepdesc class="process__desc">{s.desc}</span>
             </span>
-            <span data-stepok class="process__status">STANDBY</span>
+            <span data-stepok class="process__status">{PROCESS.standby}</span>
           </div>
         ))
       }

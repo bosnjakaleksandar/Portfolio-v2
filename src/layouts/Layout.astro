@@ -18,7 +18,7 @@ interface Props {
 const { title = `${SITE.name} — ${SITE.role}`, description = SITE.description } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImageURL = new URL('/og-cover.png', Astro.site);
+const ogImageURL = new URL(SITE.ogImage, Astro.site);
 
 const personSchema = {
   '@context': 'https://schema.org',
@@ -32,7 +32,7 @@ const personSchema = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={SITE.language}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -43,7 +43,7 @@ const personSchema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <meta name="theme-color" content="#07080a" />
+    <meta name="theme-color" content={SITE.themeColor} />
     <meta name="color-scheme" content="dark" />
 
     <meta property="og:type" content="website" />

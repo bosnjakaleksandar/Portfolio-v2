@@ -1,9 +1,9 @@
 ---
-import { BOOT_LINES } from '../../../data/content';
+import { BOOT, BOOT_LINES } from '../../../data/content';
 import './BootScreen.scss';
 ---
 
-<section id="sc-boot" class="boot" data-screen-label="Ignition" aria-label="Ignition sequence">
+<section id="sc-boot" class="boot" data-screen-label={BOOT.screenLabel} aria-label={BOOT.ariaLabel}>
   <div class="boot__log">
     {
       BOOT_LINES.map((b, i) => (
@@ -13,8 +13,8 @@ import './BootScreen.scss';
       ))
     }
     <div data-boot="99" class="boot__line boot__line--ready">
-      IGNITION READY<span class="boot__cursor">_</span>
+      {BOOT.ready}<span class="boot__cursor">_</span>
     </div>
   </div>
-  <p id="ab-hint" class="boot__hint">SCROLL TO IGNITE</p>
+  <p id="ab-hint" class="boot__hint">{BOOT.hint}</p>
 </section>

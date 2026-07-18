@@ -1,20 +1,22 @@
 ---
-import { MODULES } from '../../../data/content';
+import { CURSOR, MODULES, MODULES_CONTENT } from '../../../data/content';
 import './ModulesScreen.scss';
 ---
 
-<section id="sc-mod" class="modules" data-screen-label="System modules" aria-label="System modules">
+<section id="sc-mod" class="modules" data-screen-label={MODULES_CONTENT.screenLabel} aria-label={MODULES_CONTENT.ariaLabel}>
   <div class="modules__inner">
     <div class="modules__header">
-      <p class="modules__eyebrow">SYSTEM MODULES // 07 ONLINE</p>
-      <p id="ab-moddiag" class="modules__diag">ALL DIAGNOSTICS NOMINAL</p>
+      <p class="modules__eyebrow">
+        {MODULES_CONTENT.eyebrow} // {String(MODULES.length).padStart(2, '0')} {MODULES_CONTENT.online}
+      </p>
+      <p id="ab-moddiag" class="modules__diag">{MODULES_CONTENT.diagnostics}</p>
     </div>
     <div class="modules__grid" data-modgrid>
       {
         MODULES.map((m, i) => (
-          <div class="modules__card" data-mod={i} data-cur="MODULE">
+          <div class="modules__card" data-mod={i} data-cur={CURSOR.actions.module}>
             <div class="modules__row">
-              <span>{m.code}</span><span class="modules__on">ON</span>
+              <span>{m.code}</span><span class="modules__on">{MODULES_CONTENT.active}</span>
             </div>
             <h3 class="modules__name">{m.name}</h3>
             <p data-moddesc class="modules__desc">

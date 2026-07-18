@@ -12,12 +12,13 @@ import ReportScreen from '../components/cockpit/ReportScreen/ReportScreen.astro'
 import ContactScreen from '../components/cockpit/ContactScreen/ContactScreen.astro';
 import Controls from '../components/cockpit/Controls/Controls.astro';
 import CursorFx from '../components/cockpit/CursorFx/CursorFx.astro';
+import { PAGE } from '../data/content';
 import './index.scss';
 ---
 
 <Layout>
   <div id="ab-track" class="track" aria-hidden="true"></div>
-  <main id="ab-stage" class="stage" data-screen-label="Cockpit">
+  <main id="ab-stage" class="stage" data-screen-label={PAGE.screenLabel}>
     <canvas id="ab-canvas" class="stage__canvas"></canvas>
     <div id="ab-grain" class="stage__grain"></div>
 

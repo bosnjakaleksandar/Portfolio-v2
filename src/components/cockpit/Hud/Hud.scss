@@ -21,15 +21,11 @@
   &__status {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 11px;
   }
 
-  &__led {
-    width: 7px;
-    height: 7px;
-    background: var(--acc, #{$color-accent-default});
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--acc, #{$color-accent-default});
+  &__logo {
+    flex-shrink: 0;
   }
 
   &__mid {

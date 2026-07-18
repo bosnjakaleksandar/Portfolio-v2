@@ -1,12 +1,12 @@
 ---
-import { NAV_CHECKPOINTS } from '../../../data/content';
+import { CURSOR, NAV, NAV_CHECKPOINTS } from '../../../data/content';
 import './NavRail.scss';
 ---
 
-<nav id="ab-rail" class="nav-rail" aria-label="Lap checkpoints">
+<nav id="ab-rail" class="nav-rail" aria-label={NAV.ariaLabel}>
   {
     NAV_CHECKPOINTS.map((n, i) => (
-      <button type="button" class="nav-rail__item" data-nav={i} data-cur="JUMP">
+      <button type="button" class="nav-rail__item" data-nav={i} data-cur={CURSOR.actions.jump}>
         <span data-navlbl class="nav-rail__label">
           {n.label}
         </span>

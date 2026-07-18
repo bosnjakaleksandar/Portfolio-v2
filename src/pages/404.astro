@@ -1,16 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ArrowRightIcon from '../components/icons/ArrowRightIcon/ArrowRightIcon.astro';
+import { PAGE } from '../data/content';
 import './404.scss';
 ---
 
-<Layout title="404 — Off track" description="Page not found.">
+<Layout title={PAGE.notFound.title} description={PAGE.notFound.description}>
   <main class="not-found">
     <div>
-      <p class="not-found__eyebrow">TELEMETRY LOST // CHECKPOINT NOT FOUND</p>
-      <h1 class="not-found__code">404</h1>
-      <p class="not-found__desc">This checkpoint doesn't exist on the circuit.</p>
-      <a href="/" class="not-found__link">RETURN TO PIT LANE <ArrowRightIcon /></a>
+      <p class="not-found__eyebrow">{PAGE.notFound.eyebrow}</p>
+      <h1 class="not-found__code">{PAGE.notFound.code}</h1>
+      <p class="not-found__desc">{PAGE.notFound.message}</p>
+      <a href="/" class="not-found__link">{PAGE.notFound.linkLabel} <ArrowRightIcon /></a>
     </div>
   </main>
 </Layout>

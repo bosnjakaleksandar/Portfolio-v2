@@ -1,37 +1,33 @@
 ---
 import { Image } from 'astro:assets';
-import driverPhoto from '../../../assets/driver.jpg';
-import { DRIVER_ROWS } from '../../../data/content';
+import { DRIVER, DRIVER_ROWS } from '../../../data/content';
 import './DriverScreen.scss';
 ---
 
-<section id="sc-driver" class="driver" data-screen-label="Driver profile" aria-label="Driver profile">
+<section id="sc-driver" class="driver" data-screen-label={DRIVER.screenLabel} aria-label={DRIVER.ariaLabel}>
   <div class="driver__grid" data-drvgrid>
     <div class="driver__photo" data-drvphoto>
       <div class="driver__frame">
         <div class="driver__frame-inner">
           <Image
-            src={driverPhoto}
-            alt="Portrait of Aleksandar Bošnjak"
+            src={DRIVER.image}
+            alt={DRIVER.imageAlt}
             width={600}
             height={750}
             class="driver__photo-img"
           />
           <div class="driver__gradient"></div>
           <div class="driver__scanlines"></div>
-          <div class="driver__id">DRIVER ID // AB-02</div>
+          <div class="driver__id">{DRIVER.id}</div>
         </div>
         <span class="driver__corner driver__corner--tl"></span>
         <span class="driver__corner driver__corner--br"></span>
       </div>
     </div>
     <div class="driver__info">
-      <p class="driver__eyebrow">DRIVER TELEMETRY</p>
-      <h2 class="driver__title">Built for speed, tuned for detail.</h2>
-      <p class="driver__desc">
-        Frontend developer focused on refined interfaces, motion-driven layouts and performant systems — from
-        custom WordPress builds to modern Vue and Next.js applications.
-      </p>
+      <p class="driver__eyebrow">{DRIVER.eyebrow}</p>
+      <h2 class="driver__title">{DRIVER.title}</h2>
+      <p class="driver__desc">{DRIVER.description}</p>
       <div class="driver__table">
         {
           DRIVER_ROWS.map((r, i) => (

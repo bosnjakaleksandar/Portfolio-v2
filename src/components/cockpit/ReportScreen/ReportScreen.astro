@@ -1,12 +1,12 @@
 ---
-import { REPORT } from '../../../data/content';
+import { REPORT, REPORT_CONTENT } from '../../../data/content';
 import './ReportScreen.scss';
 ---
 
-<section id="sc-report" class="report" data-screen-label="Performance report" aria-label="Performance report">
+<section id="sc-report" class="report" data-screen-label={REPORT_CONTENT.screenLabel} aria-label={REPORT_CONTENT.ariaLabel}>
   <div class="report__inner">
-    <p class="report__eyebrow">PERFORMANCE REPORT</p>
-    <h2 class="report__title">Lap complete.</h2>
+    <p class="report__eyebrow">{REPORT_CONTENT.eyebrow}</p>
+    <h2 class="report__title">{REPORT_CONTENT.title}</h2>
     <div class="report__grid">
       {
         REPORT.map((r) => (

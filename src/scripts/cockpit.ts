@@ -10,7 +10,20 @@
 // is toggled via BEM modifier classes. The `.is-reduced-motion` class on <body> lets
 // SCSS disable transforms globally instead of branching on every write.
 
-import { ACCENT, LAP_LENGTH, TRACK_VH, GRAIN_ENABLED, NAV_CHECKPOINTS } from '../data/content';
+import {
+  ACCENT,
+  CONTROLS,
+  CURSOR,
+  GRAIN_ENABLED,
+  HUD,
+  LAP_LENGTH,
+  NAV_CHECKPOINTS,
+  PROCESS,
+  PROJECT_COUNT,
+  RUNS,
+  STEP_COUNT,
+  TRACK_VH,
+} from '../data/content';
 
 type ElId =
   | 'ab-track' | 'ab-stage' | 'ab-canvas' | 'ab-grain' | 'ab-hud' | 'ab-rail'
@@ -173,7 +186,7 @@ class Cockpit {
     });
     motionBtn?.addEventListener('click', () => {
       this.forceReduce = !this.forceReduce;
-      motionBtn.textContent = this.forceReduce ? 'MOTION REDUCED' : 'MOTION FULL';
+      motionBtn.textContent = this.forceReduce ? CONTROLS.motionReduced : CONTROLS.motionFull;
       document.body.style.setProperty('--acc', ACCENT);
       this.setLap();
     });
@@ -276,7 +289,7 @@ class Cockpit {
     });
     qsa('[data-rundisp]').forEach((dv) => (dv.style.order = mob ? '-1' : '0'));
     qsa('[data-runx]').forEach((x) => (x.style.display = mob || shortV ? 'none' : ''));
-    qsa('a[data-cur="ENTER"]').forEach((a) => {
+    qsa('[data-run-enter]').forEach((a) => {
       a.style.padding = mob ? '13px 20px' : '11px 18px';
       a.style.alignSelf = mob ? 'stretch' : 'flex-start';
       a.style.justifyContent = mob ? 'center' : 'flex-start';
@@ -303,7 +316,9 @@ class Cockpit {
       this.E['ab-dot'].style.setProperty('--op', '1');
       const target = e.target as HTMLElement;
       const hot = !!target.closest?.('[data-cur],a,button');
-      const label = (hot && (target.closest('[data-cur],a,button') as HTMLElement)?.getAttribute?.('data-cur')) || 'SELECT';
+      const label =
+        (hot && (target.closest('[data-cur],a,button') as HTMLElement)?.getAttribute?.('data-cur')) ||
+        CURSOR.defaultLabel;
       const c = this.E['ab-cur'], l = this.E['ab-curlbl'];
       c.classList.toggle('cursor__ring--active', hot);
       l.classList.toggle('cursor__label--active', hot);
@@ -385,7 +400,7 @@ class Cockpit {
     E['ab-prog'].style.setProperty('--w', p * 100 + '%');
     E['ab-pct'].textContent = String(Math.round(p * 100)).padStart(3, '0') + '%';
     E['ab-spd'].textContent = String(Math.round(this.spd)).padStart(3, '0');
-    E['ab-gear'].textContent = p < 0.045 ? 'N' : String(Math.min(8, 1 + Math.floor(p * 9)));
+    E['ab-gear'].textContent = p < 0.045 ? HUD.neutralGear : String(Math.min(8, 1 + Math.floor(p * 9)));
     const secs = p * 94.32;
     E['ab-lap'].textContent = `${Math.floor(secs / 60)}:${String(Math.floor(secs % 60)).padStart(2, '0')}.${String(Math.floor((secs % 1) * 1000)).padStart(3, '0')}`;
 
@@ -418,9 +433,10 @@ class Cockpit {
     });
 
     const ru = this.fs(E['sc-runs'], 0.385, 0.415, 0.752, 0.775, 0);
-    const rp = this.seg(0.4, 0.755) * 4;
-    const idx = Math.min(3, Math.floor(rp));
-    E['ab-runidx'].textContent = `RUN 0${idx + 1} / 04`;
+    const rp = this.seg(0.4, 0.755) * PROJECT_COUNT;
+    const idx = Math.min(PROJECT_COUNT - 1, Math.floor(rp));
+    E['ab-runidx'].textContent =
+      `${RUNS.runLabel} ${String(idx + 1).padStart(2, '0')} / ${String(PROJECT_COUNT).padStart(2, '0')}`;
     if (this.lastRun !== idx && ru.op > 0.3) { this.blip(520 + idx * 90); this.lastRun = idx; }
     Q.runs.forEach((r, k) => {
       const d = Math.min(1, Math.max(0, 1 - Math.abs(rp - 0.5 - k) * 1.9));
@@ -436,10 +452,10 @@ class Cockpit {
     this.fs(E['sc-proc'], 0.765, 0.795, 0.845, 0.87);
     const sp = this.seg(0.78, 0.845);
     Q.steps.forEach((s, i) => {
-      const on = sp * 7.6 > i + 0.5;
+      const on = sp * (STEP_COUNT + 0.6) > i + 0.5;
       const ok = s.querySelector<HTMLElement>('[data-stepok]')!;
       s.classList.toggle('process__step--cleared', on);
-      ok.textContent = on ? 'CLEAR' : 'STANDBY';
+      ok.textContent = on ? PROCESS.clear : PROCESS.standby;
     });
 
     this.fs(E['sc-report'], 0.857, 0.885, 0.915, 0.935);
