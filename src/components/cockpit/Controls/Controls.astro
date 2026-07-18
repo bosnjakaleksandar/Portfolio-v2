@@ -14,16 +14,12 @@ const iconOn = speakerHigh.replace('<svg ', '<svg class="controls__icon controls
     id="ab-btn-sound"
     class="controls__btn controls__btn--icon"
     data-cur={CURSOR.actions.toggle}
-    aria-pressed="true"
+    aria-pressed="false"
     aria-label={CONTROLS.soundLabel}
   >
     <Fragment set:html={iconOff} />
     <Fragment set:html={iconOn} />
   </button>
-  <audio id="ab-engine-start" preload="auto">
-    <source src={CONTROLS.audio.mp3} type="audio/mpeg" />
-    <source src={CONTROLS.audio.ogg} type="audio/ogg" />
-  </audio>
   <button type="button" id="ab-btn-motion" class="controls__btn" data-cur={CURSOR.actions.toggle}>
     {CONTROLS.motionFull}
   </button>

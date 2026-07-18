@@ -24,6 +24,7 @@ import {
   STEP_COUNT,
   TRACK_VH,
 } from '../data/content';
+import { CockpitAudio } from './audio';
 
 type ElId =
   | 'ab-track' | 'ab-stage' | 'ab-canvas' | 'ab-grain' | 'ab-hud' | 'ab-rail'
@@ -52,15 +53,14 @@ class Cockpit {
   };
 
   navFs = NAV_CHECKPOINTS.map((n) => n.f);
-  sound = true;
+  audio = new CockpitAudio();
   forceReduce = false;
   unlocked = false;
   ignited = false;
-  engineAudio: HTMLAudioElement | null = null;
   ignite = () => {
     if (this.ignited) return;
     this.ignited = true;
-    if (this.sound) this.ignitionSound();
+    this.audio.ignition();
   };
   igniteFromKey = (e: KeyboardEvent) => {
     if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key)) {
@@ -78,7 +78,6 @@ class Cockpit {
 
   mq!: MediaQueryList;
   ctx: CanvasRenderingContext2D | null = null;
-  ac: AudioContext | null = null;
 
   p = 0;
   spd = 0;
@@ -98,6 +97,10 @@ class Cockpit {
 
   lastRun: number | undefined;
   lastNav: number | undefined;
+  lastGear: string | undefined;
+  stepCleared: boolean[] = [];
+  reportSeen = false;
+  contactSeen = false;
   spdSkew = 0;
   lastY3: number | undefined;
 
@@ -132,6 +135,7 @@ class Cockpit {
     this.Q.letters.forEach((l) => { l.style.setProperty('--ty', '120%'); });
 
     this.p = 0; this.spd = 0; this.lastY = scrollY; this.bootT = 0; this.t0 = performance.now();
+    this.stepCleared = new Array(STEP_COUNT).fill(false);
     this.setLap();
 
     addEventListener('resize', this.onResize);
@@ -143,7 +147,6 @@ class Cockpit {
     });
 
     this.initControls();
-    this.engineAudio = document.getElementById('ab-engine-start') as HTMLAudioElement | null;
 
     if (matchMedia('(pointer:fine)').matches) this.initCursor();
 
@@ -175,20 +178,17 @@ class Cockpit {
   initControls() {
     const soundBtn = document.getElementById('ab-btn-sound');
     const motionBtn = document.getElementById('ab-btn-motion');
+    soundBtn?.setAttribute('aria-pressed', String(!this.audio.muted));
     soundBtn?.addEventListener('click', () => {
-      this.sound = !this.sound;
-      soundBtn.setAttribute('aria-pressed', String(this.sound));
-      if (this.sound && this.ignited) this.ignitionSound();
-      if (!this.sound) {
-        this.engineAudio?.pause();
-        if (this.engineAudio) this.engineAudio.currentTime = 0;
-      }
+      this.audio.toggleMuted();
+      soundBtn.setAttribute('aria-pressed', String(!this.audio.muted));
     });
     motionBtn?.addEventListener('click', () => {
       this.forceReduce = !this.forceReduce;
       motionBtn.textContent = this.forceReduce ? CONTROLS.motionReduced : CONTROLS.motionFull;
       document.body.style.setProperty('--acc', ACCENT);
       this.setLap();
+      this.audio.confirm();
     });
   }
 
@@ -202,7 +202,7 @@ class Cockpit {
   jump(i: number) {
     const f = this.navFs[i];
     scrollTo({ top: f * (document.documentElement.scrollHeight - innerHeight), behavior: this.reduced ? 'auto' : 'smooth' });
-    this.blip(660 + i * 40);
+    this.audio.checkpointLock();
   }
 
   resize() {
@@ -327,27 +327,6 @@ class Cockpit {
     });
   }
 
-  ignitionSound() {
-    if (!this.engineAudio) return;
-    this.engineAudio.pause();
-    this.engineAudio.currentTime = 0;
-    this.engineAudio.volume = 0.65;
-    void this.engineAudio.play().catch(() => {
-      // Some browsers require an explicit click before allowing audio.
-    });
-  }
-
-  blip(f: number) {
-    if (!this.sound) return;
-    try {
-      this.ac = this.ac || new (window.AudioContext || (window as any).webkitAudioContext)();
-      const o = this.ac.createOscillator(), g = this.ac.createGain(), t = this.ac.currentTime;
-      o.type = 'sine'; o.frequency.value = f;
-      g.gain.setValueAtTime(0.04, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12);
-      o.connect(g).connect(this.ac.destination); o.start(t); o.stop(t + 0.14);
-    } catch { /* Web Audio unavailable — silently skip */ }
-  }
-
   tick(t: number) {
     this.raf = requestAnimationFrame((tt) => this.tick(tt));
     const doc = document.documentElement;
@@ -359,6 +338,7 @@ class Cockpit {
     this.spd += (Math.min(340, Math.abs(dv) * 2.4 + (this.p > 0.04 ? 60 + this.p * 40 : 0)) - this.spd) * 0.06;
     this.bootT = Math.min(1, (t - this.t0) / 2200);
     if (!this.unlocked && this.bootT >= 1) this.unlockScroll();
+    this.audio.setHum(this.spd, this.p, this.reduced);
     this.apply(t);
     this.draw(t);
   }
@@ -400,7 +380,10 @@ class Cockpit {
     E['ab-prog'].style.setProperty('--w', p * 100 + '%');
     E['ab-pct'].textContent = String(Math.round(p * 100)).padStart(3, '0') + '%';
     E['ab-spd'].textContent = String(Math.round(this.spd)).padStart(3, '0');
-    E['ab-gear'].textContent = p < 0.045 ? HUD.neutralGear : String(Math.min(8, 1 + Math.floor(p * 9)));
+    const gearText = p < 0.045 ? HUD.neutralGear : String(Math.min(8, 1 + Math.floor(p * 9)));
+    if (this.lastGear !== undefined && this.lastGear !== gearText) this.audio.gearShift();
+    this.lastGear = gearText;
+    E['ab-gear'].textContent = gearText;
     const secs = p * 94.32;
     E['ab-lap'].textContent = `${Math.floor(secs / 60)}:${String(Math.floor(secs % 60)).padStart(2, '0')}.${String(Math.floor((secs % 1) * 1000)).padStart(3, '0')}`;
 
@@ -437,7 +420,7 @@ class Cockpit {
     const idx = Math.min(PROJECT_COUNT - 1, Math.floor(rp));
     E['ab-runidx'].textContent =
       `${RUNS.runLabel} ${String(idx + 1).padStart(2, '0')} / ${String(PROJECT_COUNT).padStart(2, '0')}`;
-    if (this.lastRun !== idx && ru.op > 0.3) { this.blip(520 + idx * 90); this.lastRun = idx; }
+    if (this.lastRun !== idx && ru.op > 0.3) { this.audio.blip(520 + idx * 90); this.lastRun = idx; }
     Q.runs.forEach((r, k) => {
       const d = Math.min(1, Math.max(0, 1 - Math.abs(rp - 0.5 - k) * 1.9));
       const o = this.ss(d) * ru.op;
@@ -453,13 +436,16 @@ class Cockpit {
     const sp = this.seg(0.78, 0.845);
     Q.steps.forEach((s, i) => {
       const on = sp * (STEP_COUNT + 0.6) > i + 0.5;
+      if (on && !this.stepCleared[i]) { this.stepCleared[i] = true; this.audio.stepClear(); }
       const ok = s.querySelector<HTMLElement>('[data-stepok]')!;
       s.classList.toggle('process__step--cleared', on);
       ok.textContent = on ? PROCESS.clear : PROCESS.standby;
     });
 
-    this.fs(E['sc-report'], 0.857, 0.885, 0.915, 0.935);
-    this.fs(E['sc-contact'], 0.928, 0.965, 2, 3, 30);
+    const reportFs = this.fs(E['sc-report'], 0.857, 0.885, 0.915, 0.935);
+    if (reportFs.op > 0.6 && !this.reportSeen) { this.reportSeen = true; this.audio.lapComplete(); }
+    const contactFs = this.fs(E['sc-contact'], 0.928, 0.965, 2, 3, 30);
+    if (contactFs.op > 0.6 && !this.contactSeen) { this.contactSeen = true; this.audio.shutdown(); }
 
     let ni = 0;
     this.navFs.forEach((f, i) => { if (p >= f - 0.035) ni = i; });
@@ -468,7 +454,7 @@ class Cockpit {
       d.classList.toggle('nav-rail__dot--active', on);
       Q.navbtns[i].classList.toggle('nav-rail__item--active', on);
     });
-    if (this.lastNav !== ni) { if (this.lastNav !== undefined) this.blip(880); this.lastNav = ni; }
+    if (this.lastNav !== ni) { if (this.lastNav !== undefined) this.audio.checkpointLock(); this.lastNav = ni; }
 
     if (this.tx !== undefined && this.ty !== undefined) {
       this.cx += (this.tx - this.cx) * (red ? 1 : 0.18);

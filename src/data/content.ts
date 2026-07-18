@@ -120,10 +120,6 @@ export const CONTROLS = {
   soundLabel: "Toggle sound",
   motionFull: "MOTION FULL",
   motionReduced: "MOTION REDUCED",
-  audio: {
-    mp3: "/audio/engine-start.mp3",
-    ogg: "/audio/engine-start.ogg",
-  },
 } as const;
 
 export const NAV = {
