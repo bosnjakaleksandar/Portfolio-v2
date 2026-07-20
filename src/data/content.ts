@@ -162,6 +162,7 @@ export const DRIVER_ROWS = [
   { k: "DRIVER", v: "ALEKSANDAR SAŠA BOŠNJAK" },
   { k: "CLASS", v: "FRONTEND DEVELOPER" },
   { k: "BASE", v: "NOVI SAD · SERBIA" },
+  { k: "EDUCATION", v: "BSC INFORMATION TECHNOLOGY · 2021–2025" },
   { k: "FOCUS", v: "INTERACTION · PERFORMANCE · UI/UX" },
   { k: "PLATFORMS", v: "VUE · REACT · NEXT.JS · WORDPRESS" },
   { k: "STATUS", v: "AVAILABLE FOR MISSIONS" },
